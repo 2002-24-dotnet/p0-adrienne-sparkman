@@ -89,9 +89,100 @@ namespace PizzaBox.Client.Singletons
 
         internal void ViewSales()
         {
+            AllSales();
+            SizeSales();
+            CrustSales();
+            TypeSales();
             
+            StoreMenuMain();
         }
 
+        internal void AllSales()
+        {
+            int NumSold = 0;
+            decimal TotalSales = 0;
+            foreach (Pizza p in _pr.Get())
+            {
+                if (p.Order.StoreId == Program.LoggedStore.StoreId)
+                {
+                    NumSold++;
+                    TotalSales += p.Price;
+                }
+            }
+
+            Console.WriteLine("\n\nTotal Pizzas Sold: " + NumSold);
+            Console.WriteLine("Total Revenue: $" + TotalSales); 
+        }
+        internal void CrustSales()
+        {
+            int CurrentSold = 0;
+            decimal CurrentSales = 0;
+            Console.WriteLine("===============\nCrusts\n===============");
+            foreach(Crust c in _cr.Get())
+            {   
+                foreach (Pizza p in _pr.Get())
+                {
+                    if (p.Order.StoreId == Program.LoggedStore.StoreId && p.CrustId == c.CrustId)
+                    {
+                        CurrentSold++;
+                        CurrentSales += c.Price;
+                    }
+                }
+
+                Console.Write(c.Name + " # sold: " + CurrentSold+ "\t\t");
+                if(c.CrustId!=2)
+                {
+                    Console.Write("\t");
+                }
+                Console.WriteLine(c.Name + " total revenue: $" + CurrentSales);
+                CurrentSold = 0;
+                CurrentSales = 0;
+            }
+        }
+
+        internal void SizeSales()
+        {
+            int CurrentSold = 0;
+            decimal CurrentSales = 0;
+            Console.WriteLine("===============\nSizes\n===============");
+            foreach(Size s in _sr.Get())
+            {   
+                foreach (Pizza p in _pr.Get())
+                {
+                    if (p.Order.StoreId == Program.LoggedStore.StoreId && p.SizeId == s.SizeId)
+                    {
+                        CurrentSold++;
+                        CurrentSales += s.Price;
+                    }
+                }
+                Console.Write(s.Name + " # sold: " + CurrentSold+ "  \t\t\t");
+                Console.WriteLine(s.Name + " total revenue: $" + CurrentSales);
+                CurrentSold = 0;
+                CurrentSales = 0;
+            }
+        }
+
+        internal void TypeSales()
+        {
+            int CurrentSold = 0;
+            decimal CurrentSales = 0;
+            Console.WriteLine("===============\nPizza Types\n===============");
+            foreach(PizzaType t in _tr.Get())
+            {   
+                foreach (Pizza p in _pr.Get())
+                {
+                    if (p.Order.StoreId == Program.LoggedStore.StoreId && p.PizzaTypeId == t.PizzaTypeId)
+                    {
+                        CurrentSold++;
+                        CurrentSales += t.Price;
+                    }
+                }
+                Console.Write(t.Name + " # sold: " + CurrentSold + "\t\t\t");
+                Console.WriteLine(t.Name + " total revenue: $" + CurrentSales);
+                CurrentSold = 0;
+                CurrentSales = 0;
+            }
+        }
         internal void ViewOrderHistory()
         {
             Console.WriteLine("\nOrder ID\tUser\t\t\tTotal");
@@ -170,37 +261,7 @@ namespace PizzaBox.Client.Singletons
             }    
         }
 
-        // RunStoreMenu()
-        // {
-        //     Login();
-        //     //select screen: Order History, Inventory, Sales
-        //     if(orderhistory)
-        //     {
-        //         ShowOrderHistoryInRange(1 week);
-        //         //Enter user.Id, Order.Id, or Time
-        //         if(user.Id)
-        //         {
-        //             OrderHistoryWhere(user.Id, store);
-        //         }
-        //         else if(Order.Id)
-        //         {
-        //             ViewOrder(Order.Id);
-        //         }
-        //         else if(time)
-        //         {
-        //             ShowOrderHistoryInRange(time);
-        //         }
-        //     }
-        //     else if(inventory)
-        //     {
-
-        //     }
-        //     else if(sales)
-        //     {
-        //         //TODO: Come back to this
-        //         //show pizza types, count, revenue
-        //     }
-        //}
+      
 
 
     }

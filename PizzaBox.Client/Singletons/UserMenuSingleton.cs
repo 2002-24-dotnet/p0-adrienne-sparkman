@@ -111,6 +111,7 @@ namespace PizzaBox.Client.Singletons
                     Console.WriteLine(o.OrderId + "\t\t" + o.Total + "\t\t" + StoreName);
                 }
             }
+
             OrderViewMenu();
         }
 

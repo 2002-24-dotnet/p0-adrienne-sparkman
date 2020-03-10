@@ -24,6 +24,7 @@ namespace PizzaBox.Storing.Repositories
 			.Include(p => p.Crust)
 			.Include(p => p.Size)
 			.Include(p => p.PizzaType)
+			.Include(p => p.Order)
 			.ToList();
 	}
 	public PizzaRepository() : base(Context.Pizza) {
