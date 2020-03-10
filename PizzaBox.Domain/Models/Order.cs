@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 
+
 namespace PizzaBox.Domain
 {
     public class Order : AModel
     {
+        
         public long OrderId {get;set;}
         public List<Pizza> Pizzas {get; set;}
         public decimal Total 
@@ -38,5 +40,6 @@ namespace PizzaBox.Domain
         public override long GetID() {
 			return OrderId;
 		}
+
     }
 }

@@ -18,6 +18,7 @@ namespace PizzaBox.Client.Singletons
         }
         private UserMenuSingleton(){}
         private static readonly UserRepository _ur = new UserRepository();
+        private static readonly PizzaRepository _pr = new PizzaRepository();
         private static readonly OrderRepository _or = new OrderRepository();
         private static readonly SizeRepository _sr = new SizeRepository();
         private static readonly StoreRepository _str = new StoreRepository();
@@ -91,24 +92,88 @@ namespace PizzaBox.Client.Singletons
 
         internal void ViewOrderHistory()
         {
-            Console.WriteLine("Order ID\t\t\tOrder Time\t\tTotal\t\tStore");
+
+            Console.WriteLine("\nOrder ID\tTotal\t\tStore");
             foreach(Order o in _or.Get())
             {
+                string StoreName = "";
                 if (Program.LoggedUser.UserId == o.UserId)
                 {
-                    Console.WriteLine(o.OrderId + "\t\t" + o.TimeOrdered +"\t\t" + o.Total + "\t\t" + o.Store.Name);//TODO: Add store ordered from
+                    foreach(Store s in _str.Get())
+                    {
+                        if (o.StoreId == s.StoreId)
+                        {
+                            StoreName = s.Name;
+                        }
+                    }
+
+                    Console.WriteLine(o.OrderId + "\t\t" + o.Total + "\t\t" + StoreName);
                 }
             }
             
+            //TODO: temporary vvvvvvv
+            OrderViewMenu();
         }
 
 
         //TODO: This vvvvvv
-        internal void ViewOrder(long id)
+        internal void ViewOrder()
         {
-
+            Console.WriteLine("\nEnter the ID of the order you want to view:");
+            string input = Console.ReadLine();
+            foreach(Order o in _or.Get())
+            {
+                if(string.Equals(input, o.OrderId.ToString()) && Program.LoggedUser.UserId == o.UserId)
+                {
+                    string StoreName = "";
+                    foreach(Store s in _str.Get())   
+                    {
+                        if (o.StoreId == s.StoreId)
+                        {
+                            StoreName = s.Name;
+                        }
+                    }
+                    Console.WriteLine("\n\nOrder Id\t\tTotal\tStore");
+                    Console.WriteLine(o.OrderId + "\t\t\t" + o.Total + "\t" + StoreName);
+                    Console.WriteLine("\n\nPizza Id\tPizza\t\t\t\t\tPrice");
+                    foreach(Pizza p in _pr.Get())
+                    {
+                        if (p.OrderId == o.OrderId)
+                        {
+                            Console.WriteLine(p.PizzaId + "\t\t" + p.Size.Name + " " + p.Crust.Name + " " + p.PizzaType.Name + "\t\t$" + p.Price);
+                        }
+                    }
+                    //Order Id, Total, location placed
+                    //p1 size crust type      total
+                    //etc
+                    
+                    
+                    OrderViewMenu();
+                }
+            }
         }
 
+
+        internal void OrderViewMenu()
+        {
+            bool inputselected = false;
+            while(inputselected==false)
+            {
+                Console.WriteLine("V - View an order\t\tX - Back");
+                string input = Console.ReadLine().ToUpper();
+                if (string.Equals(input, "V"))
+                {
+                    inputselected = true;
+                    ViewOrder();
+                }
+                else if (string.Equals(input, "X"))
+                {
+                    inputselected = true;
+                    UserMenuMain();
+                }
+                else Console.WriteLine("Invalid input");
+            }    
+        }
         
         public Size GetSize()
         {
@@ -174,7 +239,7 @@ namespace PizzaBox.Client.Singletons
                 {
                     Console.WriteLine(c.Name + "\t$" + c.Price);
                 }
-                Console.WriteLine("\nSelect your size:");
+                Console.WriteLine("\nSelect your crust type:");
                 Console.WriteLine("HT - Handtossed \t\tNY - New York \t\tTC - Thin Crust");
                 Console.WriteLine("DD - Deep Dish \t\t\tGF - Gluten Free");
                 
@@ -482,13 +547,12 @@ namespace PizzaBox.Client.Singletons
 
         }
     
-
-        //TODO:
         public void OrderConfirm(Order o)
         {
             bool OrderPosted=false;
             o.TimeOrdered=DateTime.Now;
             OrderPosted=_os.Post(o);
+            UserMenuMain();
         }
     }
 
