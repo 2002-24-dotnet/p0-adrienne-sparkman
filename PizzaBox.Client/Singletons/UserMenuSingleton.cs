@@ -82,6 +82,7 @@ namespace PizzaBox.Client.Singletons
                 }
                 else if(string.Equals(input, "X"))
                 {
+                    Program.LoggedUser=null;
                     Program.Intro();
                     MovedOn=true;
                 }
@@ -110,13 +111,9 @@ namespace PizzaBox.Client.Singletons
                     Console.WriteLine(o.OrderId + "\t\t" + o.Total + "\t\t" + StoreName);
                 }
             }
-            
-            //TODO: temporary vvvvvvv
             OrderViewMenu();
         }
 
-
-        //TODO: This vvvvvv
         internal void ViewOrder()
         {
             Console.WriteLine("\nEnter the ID of the order you want to view:");
@@ -519,7 +516,7 @@ namespace PizzaBox.Client.Singletons
 
 
             var p = new Pizza(){
-                SizeId = s.SizeId, CrustId = c.CrustId, PizzaTypeId = t.PizzaTypeId//, OrderId=O_Id//TODO:
+                SizeId = s.SizeId, CrustId = c.CrustId, PizzaTypeId = t.PizzaTypeId
             };
             p.Price =s.Price+c.Price+t.Price;
             Console.WriteLine("\n\nYour Pizza:");

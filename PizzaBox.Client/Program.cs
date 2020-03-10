@@ -15,13 +15,11 @@ namespace PizzaBox.Client
     private static readonly StoreMenuSingleton _sms = StoreMenuSingleton.Instance;
 
     public static User LoggedUser = new User();
+    public static Store LoggedStore = new Store();
 
     private static void Main(string[] args)
     {
-      _ums.Login();
-      //_ums.GetCrust();
-      //_ums.UserMenuMain();
-      //Intro();
+      Intro();
     }
 
     private static void GetAllPizzas()

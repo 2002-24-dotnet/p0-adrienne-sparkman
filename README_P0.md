@@ -24,7 +24,7 @@ The goal of the project is to build a Pizza Ordering System.
 ### store
 
 //+ [required] there should exist at least 2 stores
-+ [required] each store should be able to view its completed/placed orders (users and associated order within a range)
+//+ [required] each store should be able to view its completed/placed orders (users and associated order within a range)
 + [required] each store should be able to view its sales (pizzas and revenue within a range)
 NA+ [optional] each store should be able to view its inventory
 
